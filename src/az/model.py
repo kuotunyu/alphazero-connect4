@@ -91,7 +91,9 @@ class NetEvaluator(Evaluator):
         x = torch.from_numpy(planes).to(self.device)
         with torch.inference_mode():
             if self.autocast:
-                with torch.autocast("cuda", dtype=torch.float16):
+                dtype = (torch.bfloat16 if torch.cuda.is_bf16_supported()
+                         else torch.float16)
+                with torch.autocast("cuda", dtype=dtype):
                     logits, values = self.model(x)
                 logits, values = logits.float(), values.float()
             else:

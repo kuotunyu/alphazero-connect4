@@ -27,3 +27,4 @@ space/az/
 # keep showcase assets
 !assets/*.gif
 !assets/*.png
+.claude/settings.local.json

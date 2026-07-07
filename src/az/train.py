@@ -92,13 +92,17 @@ def evaluate(model, best_model, cfg: Config, device, rng) -> dict:
     }
 
 
-def save_checkpoint(ckpt_dir: Path, payload: dict) -> None:
-    tmp, last, prev = (ckpt_dir / n for n in
-                       ("ckpt_tmp.pt", "ckpt_last.pt", "ckpt_prev.pt"))
+def atomic_save(payload, path: Path) -> None:
+    tmp = path.with_name(path.name + ".tmp")
     torch.save(payload, tmp)
+    os.replace(tmp, path)
+
+
+def save_checkpoint(ckpt_dir: Path, payload: dict) -> None:
+    last, prev = ckpt_dir / "ckpt_last.pt", ckpt_dir / "ckpt_prev.pt"
     if last.exists():
         os.replace(last, prev)
-    os.replace(tmp, last)
+    atomic_save(payload, last)
 
 
 def load_checkpoint(ckpt_dir: Path):
@@ -129,6 +133,7 @@ def main(argv=None):
     parser.add_argument("--resume", action="store_true",
                         help="continue from ckpt_last.pt if present")
     parser.add_argument("--iterations", type=int, default=None)
+    parser.add_argument("--games-per-iter", type=int, default=None)
     parser.add_argument("--max-hours", type=float, default=None,
                         help="graceful stop after this wallclock budget")
     parser.add_argument("--seed", type=int, default=0)
@@ -138,6 +143,9 @@ def main(argv=None):
     cfg = PRESETS[args.preset]
     if args.iterations is not None:
         cfg.iterations = args.iterations
+    if args.games_per_iter is not None:
+        cfg.games_per_iter = args.games_per_iter
+        cfg.parallel = min(cfg.parallel, args.games_per_iter)
     device = args.device or ("cuda" if torch.cuda.is_available() else "cpu")
     ckpt_dir = args.ckpt_dir or Path("checkpoints") / args.preset
     ckpt_dir.mkdir(parents=True, exist_ok=True)
@@ -204,9 +212,10 @@ def main(argv=None):
             gated = metrics["wr_best"] > cfg.gate_threshold
             if gated:
                 best_model.load_state_dict(model.state_dict())
-                torch.save({"model": best_model.state_dict(),
-                            "config": best_model.config()},
-                           ckpt_dir / "best.pt")
+            if gated or not (ckpt_dir / "best.pt").exists():
+                atomic_save({"model": best_model.state_dict(),
+                             "config": best_model.config()},
+                            ckpt_dir / "best.pt")
             elo = mle_rating([
                 (0.0, metrics["wr_random"], cfg.arena_games),
                 (cfg.anchor_elo, metrics["wr_mcts200"], cfg.arena_games),
