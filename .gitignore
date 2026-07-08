@@ -24,6 +24,9 @@ runs/
 space/flagged/
 space/az/
 
+# generated for Colab Drive upload (regenerate: scripts/make_source_zip.py)
+alphazero-connect4-src.zip
+
 # keep showcase assets
 !assets/*.gif
 !assets/*.png
