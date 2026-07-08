@@ -2,7 +2,7 @@
 
 ## Context
 
-從零實作 AlphaZero 式自我對弈訓練一個 Connect Four（6×7）agent：本機（Windows / RTX 2070 8GB）負責核心邏輯開發、單元測試與 SMOKE 級管線驗證；正式重訓放 Colab A100（過夜 6–10 小時預算）；最終部署成 Hugging Face Space 讓任何人上網對戰。程式碼組織為 Python 套件（src/ 佈局，package 名 `az`），訓練入口同時支援 `train_colab.ipynb` 薄封裝與 `python -m az.train` 直跑。計畫經三路設計評審（引擎+MCTS／訓練管線+Colab／打包+Space 部署）定案。
+從零實作 AlphaZero 式自我對弈訓練一個 Connect Four（6×7）agent：本機（Windows / RTX 2070 8GB）負責核心邏輯開發、單元測試與 SMOKE 級管線驗證；正式重訓放 Colab A100（過夜 6–10 小時預算）；最終部署成 Hugging Face Space 讓任何人上網對戰。程式碼組織為 Python 套件（src/ 佈局，package 名 `az`），訓練入口同時支援 `alphazero_connect4_colab_train.ipynb` 薄封裝與 `python -m az.train` 直跑。計畫經三路設計評審（引擎+MCTS／訓練管線+Colab／打包+Space 部署）定案。
 
 **已與使用者確認：**
 - HF 使用者名稱 `steven0226` → model repo `steven0226/alphazero-connect4`、Space `steven0226/connect4-arena`
@@ -56,7 +56,7 @@
 │   ├── push_model.py         # safetensors+config+card+曲線 → HF model repo
 │   └── deploy_space.py       # 複製 src/az → space/az 後 upload_folder 到 Space
 ├── space/                    # app.py、requirements.txt、README.md（sdk metadata）
-├── train_colab.ipynb
+├── alphazero_connect4_colab_train.ipynb
 ├── README.md
 ├── assets/
 └── checkpoints/              # gitignored
@@ -102,7 +102,7 @@
 - Elo：random ≡ 0；`calibrate_anchor.py` 用**梯子法**（random↔MCTS-16↔MCTS-64↔MCTS-200，相鄰各 200–400 局）一次性校準 MCTS-200 絕對 Elo 後凍結寫進 config（直接打 random 會撞 100% 截斷）。每 iteration 對已知錨點做 **1 維 logistic MLE**（凹函數，二分法十行）估 Elo；勝率夾到 [1/(2N), 1−1/(2N)]。舊 best 被換下時以當時 Elo 凍結加入錨點鏈，避免後期全飽和。
 - CSV schema：`iteration, wallclock_s, wr_random, wr_mcts200, wr_best, elo, gated, buffer_size, loss_policy, loss_value, entropy_policy`。**另記「裸 policy vs random」勝率**（不搜尋直接 argmax policy）——MCTS+隨機權重本來就贏 random 90%+，裸 policy 從 ~60% 爬到 90%+ 才是「網路在學」最直接的證據。
 
-### 6. `train_colab.ipynb`
+### 6. `alphazero_connect4_colab_train.ipynb`
 - Cell：①參數（`SMOKE_TEST` 唯一手改旗標、RUN_NAME、HF_USERNAME=steven0226；SMOKE/FULL 兩個 config dict 選一傳 CLI）→ ②git clone 到 /content + `pip install -e .`（torch 用 Colab 內建，**絕不 pin 版本蓋掉 CUDA build**）→ ③掛 Drive，ckpt 目錄 `MyDrive/alphazero-connect4/<run>/` → ④`userdata.get("HF_TOKEN")` → ⑤`pytest tests/ -q` 煙霧驗證抓環境漂移 → ⑥`subprocess.Popen([sys.executable,"-m","az.train",...,"--resume","auto","--max-hours","8"])`，log 落 Drive（cell 直跑會被 websocket 拖死；真正斷線防護 = Drive ckpt + resume）→ ⑦監控 cell：tail log + 每 5 分鐘畫 elo.csv → ⑧收尾：`try: proc.wait(); push_to_hf(...) finally: runtime.unassign()`（push 失敗不能擋 unassign；Drive 是真相來源，可事後本機補 push）。
 - **A100 預算估算（寫進 notebook）**：每 iter ≈ 128 局 × ~25 手 × 160 sims ≈ 512k 次葉評估；A100 有效吞吐（含 Python 樹操作開銷）≈ 15–30k evals/s → 自我對弈 25–50s + arena 30–60s + 訓練 <10s ≈ **1.5–3 min/iter → 7 小時 ≈ 140–280 iterations，規劃目標 150 iter、--max-hours 8 兜底**。SMOKE 模式（迷你網+8局/iter，<10 分鐘）兼作 A100 吞吐實測，跑 3 iter 量 sec/iter 外推後再開正式 run。
 
@@ -126,7 +126,7 @@
 2. **game.py + test_game.py（18 案）**全綠——含反 wrap、不對稱斜向、頂列橫連、第 42 手勝、交叉翻轉測試。
 3. **mcts.py（Uniform/Rollout evaluator）+ test_mcts.py** 全綠——一步殺與必須擋各以 Uniform 與 Rollout(seed) 兩種 evaluator 驗證，π 正確欄質量 ≥0.7；再加 model.py 與 NetEvaluator。
 4. **selfplay/replay/train/arena/elo/config** + `calibrate_anchor.py` → **本機 SMOKE（2070）30–50 iter**：驗證裸 policy vs random 勝率明顯上升（~60%→90%+）、vs MCTS-200 上升、Elo 曲線生成、中斷後 `--resume auto` 接續無縫。
-5. **train_colab.ipynb**（以 SMOKE 實測吞吐校準 A100 估算數字）。
+5. **alphazero_connect4_colab_train.ipynb**（以 SMOKE 實測吞吐校準 A100 估算數字）。
 6. **space/app.py 本機跑**（先用 SMOKE 權重）→ 我與 agent 實際對弈一局、回報棋譜與勝率顯示 → 使用者提供 HF_TOKEN（write）後：push model repo（safetensors+config+card）+ push Space。正式權重等使用者跑完 Colab 後以 `push_model.py` 更新、bump Space revision。
 7. **make_gif.py、plot_elo.py、README、model card**；git commit 完整歷史。（GitHub 發佈暫緩；使用者決定後補 `gh repo create alphazero-connect4 --public --source=. --push` + topics。）
 

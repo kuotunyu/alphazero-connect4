@@ -1,7 +1,7 @@
 """Zip just the source needed to train on Colab (no .venv/checkpoints/.git).
 
 Upload the result to the Drive root (MyDrive/alphazero-connect4-src.zip) as
-the fallback source for train_colab.ipynb when the GitHub repo isn't
+the fallback source for alphazero_connect4_colab_train.ipynb when the GitHub repo isn't
 published yet. Re-run this after any local code change and re-upload.
 
 Usage: python scripts/make_source_zip.py [out.zip]
