@@ -19,6 +19,9 @@ runs/
 .env
 *.token
 
+# personal notes, not for the repo
+interview.md
+
 # gradio
 .gradio/
 space/flagged/
