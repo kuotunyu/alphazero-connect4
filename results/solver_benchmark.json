@@ -1,0 +1,2660 @@
+{
+  "schema_version": 1,
+  "model_repo": "steven0226/alphazero-connect4",
+  "model_config": {
+    "blocks": 6,
+    "filters": 96
+  },
+  "positions": 100,
+  "seed": 20260726,
+  "plies": [
+    10,
+    14,
+    18,
+    22,
+    26
+  ],
+  "budgets": [
+    50,
+    200,
+    800
+  ],
+  "position_filters": [
+    "non_terminal",
+    "at_least_two_legal_moves",
+    "no_immediate_winning_move"
+  ],
+  "oracle": {
+    "package": "connect-four-ai",
+    "version": "1.0.0",
+    "metric": "choice_is_any_maximum_exact_score_move"
+  },
+  "oracle_outcomes": {
+    "draw": 3,
+    "win": 33,
+    "loss": 64
+  },
+  "methods": {
+    "policy": {
+      "correct": 74,
+      "positions": 100,
+      "accuracy": 0.74,
+      "accuracy_ci_95": [
+        0.6462901055081282,
+        0.8159530153525186
+      ],
+      "elapsed_seconds": 0.04764150000028167,
+      "milliseconds_per_position_batched": 0.47641500000281667
+    },
+    "mcts_50": {
+      "correct": 77,
+      "positions": 100,
+      "accuracy": 0.77,
+      "accuracy_ci_95": [
+        0.6784561697712622,
+        0.8415673411969654
+      ],
+      "elapsed_seconds": 1.840459799999735,
+      "milliseconds_per_position_batched": 18.40459799999735
+    },
+    "mcts_200": {
+      "correct": 80,
+      "positions": 100,
+      "accuracy": 0.8,
+      "accuracy_ci_95": [
+        0.7111708344068411,
+        0.8666330666689676
+      ],
+      "elapsed_seconds": 6.502006900000197,
+      "milliseconds_per_position_batched": 65.02006900000197
+    },
+    "mcts_800": {
+      "correct": 82,
+      "positions": 100,
+      "accuracy": 0.82,
+      "accuracy_ci_95": [
+        0.7333264161369926,
+        0.8829977450105364
+      ],
+      "elapsed_seconds": 24.909783099999913,
+      "milliseconds_per_position_batched": 249.09783099999913
+    }
+  },
+  "paired_comparisons": {
+    "policy_vs_largest_mcts": {
+      "first_only_correct": 3,
+      "second_only_correct": 11,
+      "discordant": 14,
+      "two_sided_exact_p": 0.057373046875,
+      "first": "policy",
+      "second": "mcts_800"
+    }
+  },
+  "cases": [
+    {
+      "moves_zero_indexed": "2032041340",
+      "moves_solver_one_indexed": "3143152451",
+      "ply": 10,
+      "oracle_scores": [
+        -4,
+        -4,
+        0,
+        -1,
+        0,
+        -4,
+        -4
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        4
+      ],
+      "oracle_outcome": "draw",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "4011011616",
+      "moves_solver_one_indexed": "5122122727",
+      "ply": 10,
+      "oracle_scores": [
+        2,
+        -4,
+        -2,
+        1,
+        2,
+        -4,
+        3
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        6
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "5034012551",
+      "moves_solver_one_indexed": "6145123662",
+      "ply": 10,
+      "oracle_scores": [
+        -2,
+        -2,
+        -5,
+        0,
+        -1,
+        -3,
+        -2
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "draw",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "1300545423",
+      "moves_solver_one_indexed": "2411656534",
+      "ply": 10,
+      "oracle_scores": [
+        -12,
+        -10,
+        -11,
+        -3,
+        -7,
+        -3,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3,
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "2660022205",
+      "moves_solver_one_indexed": "3771133316",
+      "ply": 10,
+      "oracle_scores": [
+        -2,
+        -12,
+        -9,
+        -1,
+        -2,
+        -3,
+        -4
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "0300650144",
+      "moves_solver_one_indexed": "1411761255",
+      "ply": 10,
+      "oracle_scores": [
+        -5,
+        -5,
+        -11,
+        -2,
+        -2,
+        -4,
+        -4
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3,
+        4
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "3533352665",
+      "moves_solver_one_indexed": "4644463776",
+      "ply": 10,
+      "oracle_scores": [
+        -16,
+        -16,
+        -16,
+        -16,
+        -16,
+        4,
+        -16
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        5
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "3130054340",
+      "moves_solver_one_indexed": "4241165451",
+      "ply": 10,
+      "oracle_scores": [
+        -2,
+        -2,
+        -3,
+        4,
+        -3,
+        -2,
+        -2
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "0246234126",
+      "moves_solver_one_indexed": "1357345237",
+      "ply": 10,
+      "oracle_scores": [
+        5,
+        13,
+        13,
+        13,
+        13,
+        12,
+        5
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "3216314341",
+      "moves_solver_one_indexed": "4327425452",
+      "ply": 10,
+      "oracle_scores": [
+        -5,
+        4,
+        -7,
+        0,
+        4,
+        -2,
+        -6
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "4625062464",
+      "moves_solver_one_indexed": "5736173575",
+      "ply": 10,
+      "oracle_scores": [
+        -3,
+        -3,
+        -2,
+        -2,
+        -3,
+        -2,
+        -3
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        3,
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "1656311052",
+      "moves_solver_one_indexed": "2767422163",
+      "ply": 10,
+      "oracle_scores": [
+        2,
+        -3,
+        -2,
+        3,
+        -2,
+        3,
+        0
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3,
+        5
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "0645544265",
+      "moves_solver_one_indexed": "1756655376",
+      "ply": 10,
+      "oracle_scores": [
+        -3,
+        -2,
+        2,
+        -2,
+        1,
+        -3,
+        -3
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "2031460560",
+      "moves_solver_one_indexed": "3142571671",
+      "ply": 10,
+      "oracle_scores": [
+        -2,
+        2,
+        3,
+        11,
+        3,
+        2,
+        0
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "6450552260",
+      "moves_solver_one_indexed": "7561663371",
+      "ply": 10,
+      "oracle_scores": [
+        -4,
+        -4,
+        -3,
+        -5,
+        -3,
+        -3,
+        -3
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "1254461526",
+      "moves_solver_one_indexed": "2365572637",
+      "ply": 10,
+      "oracle_scores": [
+        9,
+        11,
+        12,
+        11,
+        12,
+        7,
+        10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "5004553412",
+      "moves_solver_one_indexed": "6115664523",
+      "ply": 10,
+      "oracle_scores": [
+        -12,
+        -5,
+        -2,
+        -2,
+        0,
+        -1,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "draw",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "5600122622",
+      "moves_solver_one_indexed": "6711233733",
+      "ply": 10,
+      "oracle_scores": [
+        2,
+        -2,
+        2,
+        4,
+        3,
+        0,
+        2
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "0013366115",
+      "moves_solver_one_indexed": "1124477226",
+      "ply": 10,
+      "oracle_scores": [
+        -16,
+        -16,
+        -16,
+        -16,
+        2,
+        -16,
+        -16
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "3354621401",
+      "moves_solver_one_indexed": "4465732512",
+      "ply": 10,
+      "oracle_scores": [
+        -16,
+        -16,
+        -12,
+        -16,
+        -16,
+        -16,
+        -16
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "15024463605544",
+      "moves_solver_one_indexed": "26135574716655",
+      "ply": 14,
+      "oracle_scores": [
+        -4,
+        -4,
+        -3,
+        2,
+        -2,
+        -4,
+        -14
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "53065031630566",
+      "moves_solver_one_indexed": "64176142741677",
+      "ply": 14,
+      "oracle_scores": [
+        -13,
+        -13,
+        -3,
+        -13,
+        -14,
+        -13,
+        -13
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "62652141343356",
+      "moves_solver_one_indexed": "73763252454467",
+      "ply": 14,
+      "oracle_scores": [
+        -12,
+        -4,
+        -14,
+        -12,
+        -5,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 3,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "06114203343620",
+      "moves_solver_one_indexed": "17225314454731",
+      "ply": 14,
+      "oracle_scores": [
+        3,
+        4,
+        11,
+        11,
+        12,
+        4,
+        5
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "02202215235102",
+      "moves_solver_one_indexed": "13313326346213",
+      "ply": 14,
+      "oracle_scores": [
+        -14,
+        -14,
+        null,
+        -14,
+        3,
+        -14,
+        -14
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "55106610534643",
+      "moves_solver_one_indexed": "66217721645754",
+      "ply": 14,
+      "oracle_scores": [
+        -2,
+        2,
+        -2,
+        2,
+        6,
+        -2,
+        -3
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "66600036001665",
+      "moves_solver_one_indexed": "77711147112776",
+      "ply": 14,
+      "oracle_scores": [
+        -2,
+        5,
+        4,
+        5,
+        4,
+        2,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "16431311216535",
+      "moves_solver_one_indexed": "27542422327646",
+      "ply": 14,
+      "oracle_scores": [
+        -5,
+        -5,
+        0,
+        3,
+        3,
+        -4,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3,
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 3,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "51232321154203",
+      "moves_solver_one_indexed": "62343432265314",
+      "ply": 14,
+      "oracle_scores": [
+        -14,
+        -14,
+        -14,
+        -3,
+        -14,
+        -14,
+        -14
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "00125556635355",
+      "moves_solver_one_indexed": "11236667746466",
+      "ply": 14,
+      "oracle_scores": [
+        -10,
+        -5,
+        -2,
+        -5,
+        -13,
+        null,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "03026522534560",
+      "moves_solver_one_indexed": "14137633645671",
+      "ply": 14,
+      "oracle_scores": [
+        -12,
+        -12,
+        -6,
+        -2,
+        -13,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 3,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "60646654316363",
+      "moves_solver_one_indexed": "71757765427474",
+      "ply": 14,
+      "oracle_scores": [
+        -11,
+        -10,
+        -13,
+        -10,
+        -11,
+        -10,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        3,
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "43053122621525",
+      "moves_solver_one_indexed": "54164233732636",
+      "ply": 14,
+      "oracle_scores": [
+        -14,
+        -14,
+        -14,
+        -14,
+        -14,
+        2,
+        -14
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        5
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "13034544446455",
+      "moves_solver_one_indexed": "24145655557566",
+      "ply": 14,
+      "oracle_scores": [
+        -5,
+        -6,
+        -6,
+        -4,
+        null,
+        -6,
+        -13
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "01613636255451",
+      "moves_solver_one_indexed": "12724747366562",
+      "ply": 14,
+      "oracle_scores": [
+        -14,
+        4,
+        -14,
+        -14,
+        -14,
+        -14,
+        -14
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "03535515665266",
+      "moves_solver_one_indexed": "14646626776377",
+      "ply": 14,
+      "oracle_scores": [
+        -13,
+        -13,
+        -13,
+        -13,
+        -14,
+        -13,
+        -13
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 0,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "02116464403440",
+      "moves_solver_one_indexed": "13227575514551",
+      "ply": 14,
+      "oracle_scores": [
+        -8,
+        -4,
+        2,
+        0,
+        -8,
+        -2,
+        2
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        6
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "21663635466560",
+      "moves_solver_one_indexed": "32774746577671",
+      "ply": 14,
+      "oracle_scores": [
+        -2,
+        4,
+        8,
+        8,
+        0,
+        2,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "13032321363141",
+      "moves_solver_one_indexed": "24143432474252",
+      "ply": 14,
+      "oracle_scores": [
+        -14,
+        -5,
+        -14,
+        -14,
+        -14,
+        -14,
+        -14
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "03316503226516",
+      "moves_solver_one_indexed": "14427614337627",
+      "ply": 14,
+      "oracle_scores": [
+        -6,
+        -6,
+        -5,
+        -9,
+        -12,
+        -4,
+        -9
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "525153632216011115",
+      "moves_solver_one_indexed": "636264743327122226",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        null,
+        -12,
+        -12,
+        -10,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "662115330006252251",
+      "moves_solver_one_indexed": "773226441117363362",
+      "ply": 18,
+      "oracle_scores": [
+        -3,
+        -3,
+        -3,
+        -8,
+        -12,
+        -3,
+        -3
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 2,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "302353056465203501",
+      "moves_solver_one_indexed": "413464167576314612",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        -12,
+        -12,
+        -5,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "424106656664260234",
+      "moves_solver_one_indexed": "535217767775371345",
+      "ply": 18,
+      "oracle_scores": [
+        10,
+        -4,
+        -8,
+        11,
+        -8,
+        -4,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "106231510324614413",
+      "moves_solver_one_indexed": "217342621435725524",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -9,
+        -12,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "663425126663506333",
+      "moves_solver_one_indexed": "774536237774617444",
+      "ply": 18,
+      "oracle_scores": [
+        -9,
+        -6,
+        -11,
+        -11,
+        -3,
+        -11,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "350461652261565514",
+      "moves_solver_one_indexed": "461572763372676625",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        8,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "333143354660201430",
+      "moves_solver_one_indexed": "444254465771312541",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        null,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "333031452244212542",
+      "moves_solver_one_indexed": "444142563355323653",
+      "ply": 18,
+      "oracle_scores": [
+        10,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 0,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "524533130006354516",
+      "moves_solver_one_indexed": "635644241117465627",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "006223421303512201",
+      "moves_solver_one_indexed": "117334532414623312",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        -11,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "166211121015025450",
+      "moves_solver_one_indexed": "277322232126136561",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        null,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "163101134232263222",
+      "moves_solver_one_indexed": "274212245343374333",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        null,
+        -12,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 0,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "365011323165054003",
+      "moves_solver_one_indexed": "476122434276165114",
+      "ply": 18,
+      "oracle_scores": [
+        -8,
+        -5,
+        -12,
+        -8,
+        -12,
+        -8,
+        -9
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "245005122066342000",
+      "moves_solver_one_indexed": "356116233177453111",
+      "ply": 18,
+      "oracle_scores": [
+        null,
+        -12,
+        -12,
+        -2,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "102330465303341550",
+      "moves_solver_one_indexed": "213441576414452661",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        -12,
+        2,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "466353230600552601",
+      "moves_solver_one_indexed": "577464341711663712",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "046316114363521216",
+      "moves_solver_one_indexed": "157427225474632327",
+      "ply": 18,
+      "oracle_scores": [
+        -12,
+        -12,
+        -12,
+        -11,
+        -12,
+        -12,
+        -12
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "034405113160406311",
+      "moves_solver_one_indexed": "145516224271517422",
+      "ply": 18,
+      "oracle_scores": [
+        -11,
+        -11,
+        -12,
+        -9,
+        -11,
+        -9,
+        -9
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "200314016513553335",
+      "moves_solver_one_indexed": "311425127624664446",
+      "ply": 18,
+      "oracle_scores": [
+        2,
+        -11,
+        -12,
+        -11,
+        2,
+        -11,
+        -11
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "5561401604264300605661",
+      "moves_solver_one_indexed": "6672512715375411716772",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "2363136221601444361363",
+      "moves_solver_one_indexed": "3474247332712555472474",
+      "ply": 22,
+      "oracle_scores": [
+        -2,
+        -10,
+        -10,
+        null,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 0,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "2050431213210502035660",
+      "moves_solver_one_indexed": "3161542324321613146771",
+      "ply": 22,
+      "oracle_scores": [
+        null,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "1400116103503633312456",
+      "moves_solver_one_indexed": "2511227214614744423567",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "1230231322506033632624",
+      "moves_solver_one_indexed": "2341342433617144743735",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        null,
+        null,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 0,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "1031542132631221064265",
+      "moves_solver_one_indexed": "2142653243742332175376",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "1342604161252605631044",
+      "moves_solver_one_indexed": "2453715272363716742155",
+      "ply": 22,
+      "oracle_scores": [
+        -1,
+        0,
+        8,
+        0,
+        0,
+        0,
+        -1
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 5,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "2401615466506550544154",
+      "moves_solver_one_indexed": "3512726577617661655265",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -8,
+        -10,
+        -10,
+        -10,
+        null,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "0553205355263256260220",
+      "moves_solver_one_indexed": "1664316466374367371331",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        null,
+        -10,
+        -10,
+        null,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        4,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 6,
+        "mcts_50": 6,
+        "mcts_200": 6,
+        "mcts_800": 6
+      }
+    },
+    {
+      "moves_zero_indexed": "6636041150410133143240",
+      "moves_solver_one_indexed": "7747152261521244254351",
+      "ply": 22,
+      "oracle_scores": [
+        -8,
+        -8,
+        -10,
+        -5,
+        -8,
+        -10,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "5215355314033520325231",
+      "moves_solver_one_indexed": "6326466425144631436342",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -10,
+        null,
+        -10,
+        null,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        4,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "2561500501634222510025",
+      "moves_solver_one_indexed": "3672611612745333621136",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -7,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "2203051651021320502255",
+      "moves_solver_one_indexed": "3314162762132431613366",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        null,
+        -10,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "4035141353150340411432",
+      "moves_solver_one_indexed": "5146252464261451522543",
+      "ply": 22,
+      "oracle_scores": [
+        -2,
+        -2,
+        -2,
+        -2,
+        -2,
+        -2,
+        -2
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 0,
+        "mcts_50": 0,
+        "mcts_200": 0,
+        "mcts_800": 0
+      }
+    },
+    {
+      "moves_zero_indexed": "6650665623126453151151",
+      "moves_solver_one_indexed": "7761776734237564262262",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -8,
+        -10,
+        -10,
+        -10,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "4152464531044403636015",
+      "moves_solver_one_indexed": "5263575642155514747126",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -1,
+        -10,
+        null,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "4236665035153142510365",
+      "moves_solver_one_indexed": "5347776146264253621476",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "5155222012061544265453",
+      "moves_solver_one_indexed": "6266333123172655376564",
+      "ply": 22,
+      "oracle_scores": [
+        -8,
+        9,
+        -8,
+        -2,
+        -8,
+        null,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "3441336015323265061304",
+      "moves_solver_one_indexed": "4552447126434376172415",
+      "ply": 22,
+      "oracle_scores": [
+        -10,
+        -10,
+        -10,
+        null,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "5000111420356363034044",
+      "moves_solver_one_indexed": "6111222531467474145155",
+      "ply": 22,
+      "oracle_scores": [
+        null,
+        -10,
+        -10,
+        -8,
+        -10,
+        -10,
+        -10
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "45064624004430323110135301",
+      "moves_solver_one_indexed": "56175735115541434221246412",
+      "ply": 26,
+      "oracle_scores": [
+        null,
+        -2,
+        -8,
+        -6,
+        -6,
+        -4,
+        -4
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "16050611330654123441103363",
+      "moves_solver_one_indexed": "27161722441765234552214474",
+      "ply": 26,
+      "oracle_scores": [
+        2,
+        null,
+        7,
+        null,
+        7,
+        2,
+        2
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2,
+        4
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "13064415115325505315163433",
+      "moves_solver_one_indexed": "24175526226436616426274544",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        null,
+        -8,
+        null,
+        -8,
+        null,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        2,
+        4,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 6,
+        "mcts_50": 6,
+        "mcts_200": 6,
+        "mcts_800": 6
+      }
+    },
+    {
+      "moves_zero_indexed": "11265503261053025232234316",
+      "moves_solver_one_indexed": "22376614372164136343345427",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        -8,
+        null,
+        -8,
+        -8,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 4,
+        "mcts_50": 4,
+        "mcts_200": 4,
+        "mcts_800": 4
+      }
+    },
+    {
+      "moves_zero_indexed": "11446122155506500265532441",
+      "moves_solver_one_indexed": "22557233266617611376643552",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        -8,
+        -8,
+        -8,
+        -8,
+        null,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 6,
+        "mcts_50": 6,
+        "mcts_200": 6,
+        "mcts_800": 6
+      }
+    },
+    {
+      "moves_zero_indexed": "06460314601404446356622051",
+      "moves_solver_one_indexed": "17571425712515557467733162",
+      "ply": 26,
+      "oracle_scores": [
+        -7,
+        -7,
+        -3,
+        -6,
+        null,
+        -8,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        2
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 2
+      }
+    },
+    {
+      "moves_zero_indexed": "64422316345043024145600002",
+      "moves_solver_one_indexed": "75533427456154135256711113",
+      "ply": 26,
+      "oracle_scores": [
+        null,
+        -8,
+        -8,
+        -8,
+        null,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        2,
+        3,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "12035402606343366160360320",
+      "moves_solver_one_indexed": "23146513717454477271471431",
+      "ply": 26,
+      "oracle_scores": [
+        null,
+        5,
+        -8,
+        null,
+        -8,
+        -8,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "34224105134132444265252303",
+      "moves_solver_one_indexed": "45335216245243555376363414",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        -8,
+        null,
+        -8,
+        null,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "40540643466200540455226515",
+      "moves_solver_one_indexed": "51651754577311651566337626",
+      "ply": 26,
+      "oracle_scores": [
+        2,
+        7,
+        5,
+        7,
+        null,
+        null,
+        6
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        3
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "50442212430022652434465513",
+      "moves_solver_one_indexed": "61553323541133763545576624",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        -8,
+        null,
+        -8,
+        null,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 1,
+        "mcts_50": 1,
+        "mcts_200": 1,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "20520031322021133614650305",
+      "moves_solver_one_indexed": "31631142433132244725761416",
+      "ply": 26,
+      "oracle_scores": [
+        null,
+        2,
+        -7,
+        -7,
+        -8,
+        2,
+        -7
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1,
+        5
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "11310665411533014220246566",
+      "moves_solver_one_indexed": "22421776522644125331357677",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        null,
+        -8,
+        -8,
+        -8,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 5,
+        "mcts_50": 5,
+        "mcts_200": 5,
+        "mcts_800": 5
+      }
+    },
+    {
+      "moves_zero_indexed": "43264562430660626441345255",
+      "moves_solver_one_indexed": "54375673541771737552456366",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        -8,
+        -8,
+        -8,
+        null,
+        -8,
+        null
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        2,
+        3,
+        5
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "54316213041321611624432250",
+      "moves_solver_one_indexed": "65427324152432722735543361",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        null,
+        -8,
+        -8,
+        -8,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "32544002251162403224434003",
+      "moves_solver_one_indexed": "43655113362273514335545114",
+      "ply": 26,
+      "oracle_scores": [
+        -7,
+        -8,
+        null,
+        -7,
+        null,
+        -8,
+        -7
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        3,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "20354440006321661631560304",
+      "moves_solver_one_indexed": "31465551117432772742671415",
+      "ply": 26,
+      "oracle_scores": [
+        null,
+        -8,
+        -8,
+        -8,
+        -8,
+        -8,
+        -4
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 6,
+        "mcts_50": 2,
+        "mcts_200": 6,
+        "mcts_800": 6
+      }
+    },
+    {
+      "moves_zero_indexed": "02335544011645604063002412",
+      "moves_solver_one_indexed": "13446655122756715174113523",
+      "ply": 26,
+      "oracle_scores": [
+        null,
+        6,
+        1,
+        0,
+        -6,
+        -6,
+        5
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        1
+      ],
+      "oracle_outcome": "win",
+      "choices_zero_indexed": {
+        "policy": 2,
+        "mcts_50": 2,
+        "mcts_200": 2,
+        "mcts_800": 1
+      }
+    },
+    {
+      "moves_zero_indexed": "20326223046365452326161404",
+      "moves_solver_one_indexed": "31437334157476563437272515",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        -8,
+        null,
+        -8,
+        -8,
+        -8,
+        -8
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        0,
+        1,
+        3,
+        4,
+        5,
+        6
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 3
+      }
+    },
+    {
+      "moves_zero_indexed": "15645511231001461432536326",
+      "moves_solver_one_indexed": "26756622342112572543647437",
+      "ply": 26,
+      "oracle_scores": [
+        -8,
+        null,
+        -7,
+        -2,
+        -2,
+        -7,
+        -7
+      ],
+      "oracle_optimal_moves_zero_indexed": [
+        3,
+        4
+      ],
+      "oracle_outcome": "loss",
+      "choices_zero_indexed": {
+        "policy": 3,
+        "mcts_50": 3,
+        "mcts_200": 3,
+        "mcts_800": 4
+      }
+    }
+  ]
+}

@@ -1,0 +1,29 @@
+{
+  "iterations": 150,
+  "self_play_games": 19200,
+  "wallclock_hours": 7.917583333333333,
+  "gated_updates": 59,
+  "elo": {
+    "first": 973.8,
+    "last": 1625.6,
+    "peak": 1625.6,
+    "first_peak_iteration": 62,
+    "last_50_mean": 1593.648
+  },
+  "vs_mcts200": {
+    "first": 0.5,
+    "last": 1.0,
+    "last_50_mean": 0.98825,
+    "all_iterations_at_least_90pct_from": 69
+  },
+  "policy_vs_random": {
+    "first": 0.75,
+    "last": 1.0
+  },
+  "loss": {
+    "policy_first": 1.8528,
+    "policy_last": 1.0421,
+    "value_first": 0.8098,
+    "value_last": 0.1565
+  }
+}

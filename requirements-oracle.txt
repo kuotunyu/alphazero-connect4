@@ -1,0 +1,5 @@
+# Optional exact-solver benchmark. The solver wheel requires Python >=3.13.
+connect-four-ai==1.0.0
+huggingface_hub>=0.30
+safetensors>=0.4
+torch>=2.2
