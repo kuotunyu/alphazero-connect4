@@ -5,6 +5,26 @@
 
 ![self-play demo](assets/demo.gif)
 
+> **English TL;DR** — A from-scratch AlphaZero-style Connect Four agent trained from 19,200
+> self-play games with batched PUCT MCTS and a policy/value ResNet. The final model reached
+> Elo **1625.6** and beat the fixed MCTS-200 anchor consistently. On 100 deterministic,
+> non-trivial positions scored by an independent exact solver, best-move accuracy rose from
+> **74% policy-only to 82% with MCTS-800**. A live
+> [Hugging Face Space](https://huggingface.co/spaces/steven0226/connect4-arena) is available.
+
+## 結果一覽
+
+| 證據 | 結果 |
+|---|---:|
+| 正式自我對弈 | 19,200 局、150 iterations、7.92 小時 |
+| 最終 Elo | **1625.6**（隨機 = 0、純 MCTS-200 = 989） |
+| 精確解算器最佳落子命中率 | policy **74%** → MCTS-50 **77%** → MCTS-200 **80%** → MCTS-800 **82%** |
+| 線上成果 | [可玩的 Hugging Face Space](https://huggingface.co/spaces/steven0226/connect4-arena) |
+
+這裡同時保留了[完整 150 輪原始資料](results/elo_full.csv)、
+[可重現摘要](results/full_run_summary.md)與[逐盤精確解算器評測](results/solver_benchmark.md)，
+因此成果不只是一張挑選過的曲線。
+
 ## AlphaZero 三要素（白話版）
 
 1. **自我對弈（self-play）**：agent 沒有老師，自己跟自己下棋。每一步都記下「當時的盤面、
@@ -46,9 +66,9 @@ src/az/            核心套件
   arena.py         批次化對戰（隨機 / 純 MCTS / 最佳網錨點）、gating
   elo.py           對錨點的 MLE Elo（勝率截斷防無限大）
   viz.py           棋盤渲染與 Elo 曲線（Space 與 GIF 共用）
-tests/             29 個單元測試（連四各方向、平手、非法步、一步殺、必須擋…）
+tests/             36 個單元測試（連四各方向、平手、非法步、一步殺、必須擋、結果驗證…）
 space/             Gradio 對戰 app（獨立部署到 HF Space）
-scripts/           錨點 Elo 校準、GIF、Elo 畫圖、HF 發佈
+scripts/           錨點 Elo 校準、精確解算器 benchmark、結果摘要、GIF、Elo 圖、HF 發佈
 alphazero_connect4_colab_train.ipynb  Colab A100 訓練薄封裝
 ```
 
@@ -60,7 +80,7 @@ alphazero_connect4_colab_train.ipynb  Colab A100 訓練薄封裝
 python -m venv .venv && .venv/Scripts/activate
 pip install torch --index-url https://download.pytorch.org/whl/cu121   # Windows CUDA
 pip install -e ".[dev]"
-pytest tests -q                      # 29 tests
+pytest tests -q                      # 36 tests
 python -m az.train --preset smoke    # ~40 分鐘 @ RTX 2070，驗證學習訊號
 ```
 
@@ -78,7 +98,7 @@ python -m az.train --preset smoke    # ~40 分鐘 @ RTX 2070，驗證學習訊�
 
 | 指標 | iteration 0 | iteration 149（最終） |
 |---|---|---|
-| Elo（隨機 agent = 0、純 MCTS-200 = 989 錨定） | 974 | **1625.6**（峰值同為 1625.6，iter 62 起即達到並維持） |
+| Elo（隨機 agent = 0、純 MCTS-200 = 989 錨定） | 974 | **1625.6**（iter 62 首次達峰；最後 50 輪平均 1593.6） |
 | 裸 policy（不搜尋）vs 隨機 | 0.75 | **1.00** |
 | MCTS+網 vs 隨機 | 0.975 | **1.00** |
 | vs 純 MCTS-200 錨點 | 0.50 | **1.00**（iter 69 起每輪皆 ≥0.9，後段多為全勝） |
@@ -87,6 +107,12 @@ python -m az.train --preset smoke    # ~40 分鐘 @ RTX 2070，驗證學習訊�
 ![FULL elo curve](assets/elo_curve_full.png)
 
 **最終版本穩定打贏純 MCTS-200 錨點**——這是規劃階段設定的目標，目前的部署權重已達成。
+
+完整數值與摘要可由下列命令重新產生：
+
+```bash
+python scripts/summarize_full_run.py
+```
 
 <details>
 <summary>本機 SMOKE 驗證（RTX 2070，40 iterations／~26 分鐘，正式訓練前的管線健檢）</summary>
@@ -105,12 +131,38 @@ SMOKE 用縮小配置（3 blocks × 64 filters、24 局/iter、64 sims）確認�
 
 </details>
 
+## 精確解算器外部評測（筆電 CPU，100 個局面）
+
+Elo 只表示「相對於選定對手有多強」，不能保證每步都正確。因此另用獨立的
+[`connect-four-ai`](https://github.com/benjaminrall/connect-four-ai) 完美解算器，
+對 100 個固定 seed、橫跨第 10/14/18/22/26 手、且沒有一步必勝的非終局盤面，取得每個合法
+落子的精確分數。模型若選到任何一個並列最高分的落子即算命中：
+
+| 方法 | 精確最佳落子 | 命中率 [Wilson 95% CI] |
+|---|---:|---:|
+| 裸 policy | 74/100 | **74%** [64.6%, 81.6%] |
+| MCTS-50 | 77/100 | **77%** [67.8%, 84.2%] |
+| MCTS-200 | 80/100 | **80%** [71.1%, 86.7%] |
+| MCTS-800 | 82/100 | **82%** [73.3%, 88.3%] |
+
+點估計隨搜尋預算單調提升；配對上 policy 獨有 3 題正確、MCTS-800 獨有 11 題正確，但 exact
+McNemar `p=0.0574`，所以 100 盤仍不足以宣稱兩者差異達 0.05 顯著。800 sims 也有 18% 未命中，
+因此「強但非完美」是較準確的結論。逐盤 move string、oracle 七欄分數、模型選擇與 CPU timing
+都在 [`results/solver_benchmark.json`](results/solver_benchmark.json)。
+
+使用 Python 3.13+ 可完整重跑：
+
+```bash
+python -m pip install -r requirements-oracle.txt
+python scripts/benchmark_solver_moves.py --positions 100 --budgets 50 200 800
+```
+
 ## 線上對戰
 
 🎮 **[connect4-arena Space](https://huggingface.co/spaces/steven0226/connect4-arena)** —
 選先後手與難度（50 / 200 / 800 sims），畫面即時顯示 value head 對局勢的勝率評估。
 
-*（截圖佔位：Space 上線後補）*
+![Hugging Face Space 對戰畫面](assets/space_screenshot.png)
 
 本機試玩：`python scripts/run_space_local.py checkpoints/smoke/best.pt`
 
