@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1280" height="640" viewBox="0 0 1280 640">
+  <defs>
+    <radialGradient id="glow" cx="78%" cy="48%" r="55%">
+      <stop offset="0" stop-color="#17445c"/>
+      <stop offset="1" stop-color="#07131d"/>
+    </radialGradient>
+    <pattern id="scan" width="8" height="8" patternUnits="userSpaceOnUse">
+      <path d="M0 7.5H8" stroke="#bde9ef" stroke-opacity=".04"/>
+    </pattern>
+    <filter id="soft">
+      <feGaussianBlur stdDeviation="13"/>
+    </filter>
+  </defs>
+  <rect width="1280" height="640" fill="url(#glow)"/>
+  <rect width="1280" height="640" fill="url(#scan)"/>
+  <path d="M0 541L510 0" stroke="#22d3c5" stroke-opacity=".2" stroke-width="2"/>
+  <path d="M162 640L713 0" stroke="#22d3c5" stroke-opacity=".08" stroke-width="1"/>
+  <text x="74" y="82" font-family="Consolas, monospace" font-size="20" font-weight="700" letter-spacing="4" fill="#22d3c5">RL / 02 — SELF-PLAY SYSTEMS</text>
+  <text x="72" y="195" font-family="Rockwell, Georgia, serif" font-size="86" font-weight="700" letter-spacing="-3" fill="#f4ead6">ALPHA</text>
+  <text x="72" y="276" font-family="Rockwell, Georgia, serif" font-size="86" font-weight="700" letter-spacing="-3" fill="#f4ead6">ZERO</text>
+  <text x="78" y="322" font-family="Consolas, monospace" font-size="19" letter-spacing="2" fill="#9ab7bf">CONNECT FOUR · FROM SCRATCH</text>
+  <g transform="translate(76 375)">
+    <rect width="222" height="112" rx="4" fill="#0d2635" stroke="#22d3c5" stroke-opacity=".6"/>
+    <text x="20" y="40" font-family="Consolas, monospace" font-size="16" fill="#9ab7bf">SELF-PLAY</text>
+    <text x="20" y="82" font-family="Rockwell, Georgia, serif" font-size="38" font-weight="700" fill="#f4ead6">19,200</text>
+  </g>
+  <g transform="translate(316 375)">
+    <rect width="190" height="112" rx="4" fill="#0d2635" stroke="#22d3c5" stroke-opacity=".6"/>
+    <text x="20" y="40" font-family="Consolas, monospace" font-size="16" fill="#9ab7bf">FINAL ELO</text>
+    <text x="20" y="82" font-family="Rockwell, Georgia, serif" font-size="38" font-weight="700" fill="#f4ead6">1625.6</text>
+  </g>
+  <text x="78" y="549" font-family="Consolas, monospace" font-size="18" fill="#f1b53a">POLICY 74%</text>
+  <path d="M216 542H319" stroke="#f1b53a" stroke-width="2"/>
+  <path d="M310 535L320 542L310 549" fill="none" stroke="#f1b53a" stroke-width="2"/>
+  <text x="337" y="549" font-family="Consolas, monospace" font-size="18" fill="#f1b53a">MCTS-800 82% EXACT-BEST</text>
+  <g transform="translate(724 95)">
+    <rect x="-18" y="-18" width="484" height="452" rx="38" fill="#22d3c5" opacity=".1" filter="url(#soft)"/>
+    <rect width="448" height="416" rx="28" fill="#0a2232" stroke="#2c7081" stroke-width="3"/>
+    <g fill="#07131d" stroke="#2c7081" stroke-width="2">
+      <circle cx="44" cy="44" r="25"/><circle cx="104" cy="44" r="25"/><circle cx="164" cy="44" r="25"/><circle cx="224" cy="44" r="25"/><circle cx="284" cy="44" r="25"/><circle cx="344" cy="44" r="25"/><circle cx="404" cy="44" r="25"/>
+      <circle cx="44" cy="108" r="25"/><circle cx="104" cy="108" r="25"/><circle cx="164" cy="108" r="25"/><circle cx="224" cy="108" r="25"/><circle cx="284" cy="108" r="25"/><circle cx="344" cy="108" r="25"/><circle cx="404" cy="108" r="25"/>
+      <circle cx="44" cy="172" r="25"/><circle cx="104" cy="172" r="25"/><circle cx="164" cy="172" r="25"/><circle cx="224" cy="172" r="25"/><circle cx="284" cy="172" r="25"/><circle cx="344" cy="172" r="25"/><circle cx="404" cy="172" r="25"/>
+      <circle cx="44" cy="236" r="25"/><circle cx="104" cy="236" r="25"/><circle cx="164" cy="236" r="25"/><circle cx="224" cy="236" r="25"/><circle cx="284" cy="236" r="25"/><circle cx="344" cy="236" r="25"/><circle cx="404" cy="236" r="25"/>
+      <circle cx="44" cy="300" r="25"/><circle cx="104" cy="300" r="25"/><circle cx="164" cy="300" r="25"/><circle cx="224" cy="300" r="25"/><circle cx="284" cy="300" r="25"/><circle cx="344" cy="300" r="25"/><circle cx="404" cy="300" r="25"/>
+      <circle cx="44" cy="364" r="25"/><circle cx="104" cy="364" r="25"/><circle cx="164" cy="364" r="25"/><circle cx="224" cy="364" r="25"/><circle cx="284" cy="364" r="25"/><circle cx="344" cy="364" r="25"/><circle cx="404" cy="364" r="25"/>
+    </g>
+    <g fill="#ef554b"><circle cx="104" cy="364" r="24"/><circle cx="164" cy="300" r="24"/><circle cx="224" cy="236" r="24"/><circle cx="284" cy="172" r="24"/></g>
+    <g fill="#f1b53a"><circle cx="164" cy="364" r="24"/><circle cx="224" cy="364" r="24"/><circle cx="224" cy="300" r="24"/><circle cx="284" cy="300" r="24"/><circle cx="344" cy="364" r="24"/></g>
+    <path d="M104 364L284 172" stroke="#ef554b" stroke-width="5" stroke-linecap="round" opacity=".75"/>
+  </g>
+</svg>
