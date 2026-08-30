@@ -4,6 +4,7 @@ from __future__ import annotations
 
 import importlib.util
 from pathlib import Path
+from types import ModuleType
 
 import pytest
 
@@ -25,9 +26,6 @@ def load_model_assets_module():
 def load_space_app_module(monkeypatch):
     import sys
 
-    import torch
-    from az import model as az_model
-
     class StubModel:
         def load_state_dict(self, state):
             return None
@@ -40,14 +38,22 @@ def load_space_app_module(monkeypatch):
             self.model = model
             self.device = device
 
+    torch_stub = ModuleType("torch")
+    torch_stub.load = lambda *args, **kwargs: {"config": {}, "model": {}}
+    torch_stub.set_num_threads = lambda threads: None
+
+    model_stub = ModuleType("az.model")
+    model_stub.PolicyValueNet = StubModel
+    model_stub.create_model = lambda config: StubModel()
+    model_stub.NetEvaluator = StubEvaluator
+
+    viz_stub = ModuleType("az.viz")
+    viz_stub.render_board = lambda *args, **kwargs: None
+
     monkeypatch.setenv("AZ_LOCAL_WEIGHTS", "ui-test.pt")
-    monkeypatch.setattr(
-        torch,
-        "load",
-        lambda *args, **kwargs: {"config": {}, "model": {}},
-    )
-    monkeypatch.setattr(az_model, "create_model", lambda config: StubModel())
-    monkeypatch.setattr(az_model, "NetEvaluator", StubEvaluator)
+    monkeypatch.setitem(sys.modules, "torch", torch_stub)
+    monkeypatch.setitem(sys.modules, "az.model", model_stub)
+    monkeypatch.setitem(sys.modules, "az.viz", viz_stub)
     monkeypatch.syspath_prepend(str(ROOT / "space"))
 
     module_path = ROOT / "space" / "app.py"
