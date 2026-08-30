@@ -4,7 +4,7 @@
 
 **Goal:** Deliver a clearer, denser, non-template-like Connect Four Space whose player-facing text is at least 20px and whose AI wait state never covers the board.
 
-**Architecture:** Keep Gradio 6.20 and the existing callback/API boundary. Add one `APP_CSS` design-token block and stable `elem_id`/`elem_classes` hooks in `space/app.py`; switch all click events from the default full progress overlay to Gradio's minimal progress mode. Verify the source contract in pytest, then verify computed styles and interactions in a real Chromium browser before publishing the same `space/` bundle.
+**Architecture:** Keep Gradio 6.20 and the existing callback/API boundary. Add one `APP_CSS` design-token block, pass it through a Gradio 6-compatible `launch_app()` boundary, and add stable `elem_id`/`elem_classes` hooks in `space/app.py`; switch all click events from the default full progress overlay to Gradio's minimal progress mode. Verify the serialized component config and launch options in pytest, then verify computed styles and interactions in a real Chromium browser before publishing the same `space/` bundle.
 
 **Tech Stack:** Python 3.11, Gradio 6.20.0, PyTorch CPU inference, pytest, Playwright Chromium, GitHub Actions, Hugging Face Spaces.
 
@@ -93,13 +93,14 @@ def test_space_ui_contract_is_large_type_compact_and_responsive(monkeypatch):
         "control-panel",
         "turn-status",
         "position-evaluation",
-        "game-control",
         "thinking-note",
     } <= hooks
     assert {"column-button", "game-control"} <= classes
 
-    css = config["css"]
-    assert css is not None
+    launch_options = {}
+    monkeypatch.setattr(app.demo, "launch", lambda **options: launch_options.update(options))
+    app.launch_app()
+    css = launch_options["css"]
     for rule in (
         "font-size: 20px",
         "font-size: 22px",
@@ -200,7 +201,7 @@ Adjust selectors after the first browser inspection only if Gradio's rendered DO
 Change the Blocks declaration and components to this structure while keeping existing values and outputs:
 
 ```python
-with gr.Blocks(title="Connect4 Arena — AlphaZero", css=APP_CSS) as demo:
+with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
     gr.Markdown(
         "# 四子棋 Connect Four — 挑戰 AlphaZero\n"
         "選擇欄位落子，AlphaZero 將以策略／價值網路與 MCTS 回應。  \n"
@@ -245,6 +246,17 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero", css=APP_CSS) as demo:
                 "AI 思考時會保留棋盤，請稍候片刻。",
                 elem_id="thinking-note",
             )
+```
+
+Expose the Gradio 6 launch boundary and keep it as the only `__main__` action:
+
+```python
+def launch_app() -> None:
+    demo.launch(css=APP_CSS)
+
+
+if __name__ == "__main__":
+    launch_app()
 ```
 
 - [ ] **Step 5: Run the focused test and verify GREEN**
