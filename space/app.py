@@ -374,10 +374,11 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
                         elem_id="thinking-note")
 
     outputs = [board, session, value_label, status]
-    new_game.click(on_new_game, inputs=[side, sims], outputs=outputs)
+    new_game.click(on_new_game, inputs=[side, sims], outputs=outputs,
+                   show_progress="minimal")
     for c, btn in enumerate(buttons):
         btn.click(functools.partial(on_drop, c), inputs=[session, sims],
-                  outputs=outputs)
+                  outputs=outputs, show_progress="minimal")
 
 def launch_app() -> None:
     demo.launch(css=APP_CSS)

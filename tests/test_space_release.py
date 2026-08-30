@@ -155,3 +155,21 @@ def test_space_ui_contract_is_large_type_compact_and_responsive(monkeypatch):
         "overflow-x: hidden",
     ):
         assert rule in css
+
+
+def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+    config = app.demo.get_config_file()
+    click_events = [
+        dependency
+        for dependency in config["dependencies"]
+        if any(event == "click" for _, event in dependency["targets"])
+    ]
+
+    assert len(click_events) == 8
+    assert all(event["show_progress"] == "minimal" for event in click_events)
+    assert all(len(event["outputs"]) == 4 for event in click_events)
+    assert any(
+        "AI 思考時會保留棋盤" in str(component["props"].get("value", ""))
+        for component in config["components"]
+    )
