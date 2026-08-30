@@ -104,12 +104,12 @@ Change the outer container and desktop panel rules to this shape:
   flex: 38 1 0 !important;
 }
 
-#board .image-container,
-#board img {
+#board .image-container {
   width: 100% !important;
 }
 
 #board img {
+  width: 100% !important;
   height: auto !important;
   object-fit: contain !important;
 }
