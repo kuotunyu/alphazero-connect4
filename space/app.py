@@ -435,6 +435,7 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
                 type="numpy",
                 show_label=False,
                 interactive=False,
+                buttons=[],
                 elem_id="board",
             )
             with gr.Row(elem_id="column-actions"):

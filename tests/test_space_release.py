@@ -187,6 +187,13 @@ def test_space_ui_contract_is_large_type_compact_and_responsive(monkeypatch):
     )
 
 
+def test_space_board_omits_nonessential_image_toolbar(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+
+    assert app.board.interactive is False
+    assert app.board.buttons == []
+
+
 def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
     app = load_space_app_module(monkeypatch)
     config = app.demo.get_config_file()
