@@ -66,7 +66,7 @@ src/az/            canonical 核心套件（唯一手寫來源）
   arena.py         批次化對戰（隨機 / 純 MCTS / 最佳網錨點）、gating
   elo.py           對錨點的 MLE Elo（勝率截斷防無限大）
   viz.py           棋盤渲染與 Elo 曲線（Space 與 GIF 共用）
-tests/             36 個核心／結果測試 + 3 個 Space release-boundary 測試
+tests/             36 個核心／結果測試 + 8 個 Space release-boundary 測試
 space/             Gradio app 與部署設定；space/az 是發布時生成的 bundle
 scripts/           錨點 Elo 校準、精確解算器 benchmark、結果摘要、GIF、Elo 圖、HF 發佈
 alphazero_connect4_colab_train.ipynb  Colab A100 訓練薄封裝
@@ -80,7 +80,7 @@ alphazero_connect4_colab_train.ipynb  Colab A100 訓練薄封裝
 python -m venv .venv && .venv/Scripts/activate
 pip install torch --index-url https://download.pytorch.org/whl/cu121   # Windows CUDA
 pip install -e ".[dev]"
-pytest tests -q                      # 39 tests：36 既有 + 3 release-boundary
+pytest tests -q                      # 44 tests：36 既有 + 8 release-boundary
 python -m az.train --preset smoke    # ~40 分鐘 @ RTX 2070，驗證學習訊號
 ```
 
