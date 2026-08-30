@@ -41,8 +41,9 @@ APP_CSS = """
 
 .gradio-container {
   width: 100% !important;
-  max-width: 1240px !important;
-  padding: 16px 20px 24px !important;
+  max-width: 1660px !important;
+  margin-inline: auto !important;
+  padding: 16px clamp(20px, 2vw, 32px) 24px !important;
   box-sizing: border-box;
   overflow-x: hidden;
   color: var(--az-ink);
@@ -94,7 +95,7 @@ APP_CSS = """
 
 #game-layout {
   gap: 18px;
-  align-items: stretch;
+  align-items: flex-start;
   margin-top: 18px;
 }
 
@@ -106,7 +107,11 @@ APP_CSS = """
   box-shadow: none !important;
 }
 
-#board-panel { min-width: 0; gap: 9px; }
+#board-panel {
+  min-width: 0;
+  gap: 9px;
+  flex: 62 1 0 !important;
+}
 
 #board {
   overflow: hidden;
@@ -114,8 +119,19 @@ APP_CSS = """
   background: var(--az-surface);
 }
 
-#board .image-container,
+#board .image-container {
+  width: 100% !important;
+  border-radius: 0 !important;
+}
+
+#board .image-frame {
+  width: 100% !important;
+}
+
 #board img {
+  width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important;
   border-radius: 0 !important;
 }
 
@@ -152,6 +168,8 @@ APP_CSS = """
 }
 
 #control-panel {
+  min-width: 420px;
+  flex: 38 1 0 !important;
   gap: 13px;
   padding: 0 18px 18px;
   border: 1px solid var(--az-line);
@@ -279,6 +297,11 @@ APP_CSS = """
   .gradio-container { padding: 12px !important; }
   #app-header h1 { font-size: 31px !important; }
   #game-layout { flex-direction: column; }
+  #board-panel,
+  #control-panel {
+    min-width: 0;
+    flex: 1 1 auto !important;
+  }
   #control-panel { border-left: 1px solid var(--az-line); }
   #column-actions { gap: 4px; }
   .column-button { min-height: 54px !important; }

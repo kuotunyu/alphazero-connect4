@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import importlib.util
+import re
 from pathlib import Path
 from types import ModuleType
 
@@ -161,6 +162,29 @@ def test_space_ui_contract_is_large_type_compact_and_responsive(monkeypatch):
         "overflow-x: hidden",
     ):
         assert rule in css
+
+    assert re.search(
+        r"\.gradio-container\s*\{[^}]*max-width:\s*1660px[^}]*"
+        r"margin-inline:\s*auto",
+        css,
+        re.DOTALL,
+    )
+    assert re.search(
+        r"#game-layout\s*\{[^}]*align-items:\s*flex-start", css, re.DOTALL
+    )
+    assert re.search(r"#board-panel\s*\{[^}]*flex:\s*62 1 0", css, re.DOTALL)
+    assert re.search(r"#control-panel\s*\{[^}]*flex:\s*38 1 0", css, re.DOTALL)
+    assert re.search(
+        r"#board \.image-frame\s*\{[^}]*width:\s*100% !important",
+        css,
+        re.DOTALL,
+    )
+    assert re.search(
+        r"#board img\s*\{[^}]*width:\s*100% !important[^}]*"
+        r"height:\s*auto !important",
+        css,
+        re.DOTALL,
+    )
 
 
 def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
