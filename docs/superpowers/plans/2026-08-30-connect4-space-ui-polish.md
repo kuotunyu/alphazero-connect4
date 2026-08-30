@@ -32,19 +32,60 @@
 - Consumes: existing Gradio components and callback output order `[board, session, value_label, status]`.
 - Produces: `APP_CSS: str`, stable hooks `app-header`, `game-layout`, `board-panel`, `board`, `column-actions`, `control-panel`, `turn-status`, `position-evaluation`, `game-control`, `new-game`, and `thinking-note`.
 
-- [ ] **Step 1: Write the failing source-contract test**
+- [ ] **Step 1: Write the failing rendered-config contract test**
 
 Add to `tests/test_space_release.py`:
 
 ```python
-def load_space_app_source() -> str:
-    return (ROOT / "space" / "app.py").read_text(encoding="utf-8")
+def load_space_app_module(monkeypatch):
+    import sys
+
+    import torch
+    from az import model as az_model
+
+    class StubModel:
+        def load_state_dict(self, state):
+            return None
+
+        def eval(self):
+            return self
+
+    class StubEvaluator:
+        def __init__(self, model, device):
+            self.model = model
+            self.device = device
+
+    monkeypatch.setenv("AZ_LOCAL_WEIGHTS", "ui-test.pt")
+    monkeypatch.setattr(
+        torch,
+        "load",
+        lambda *args, **kwargs: {"config": {}, "model": {}},
+    )
+    monkeypatch.setattr(az_model, "create_model", lambda config: StubModel())
+    monkeypatch.setattr(az_model, "NetEvaluator", StubEvaluator)
+    monkeypatch.syspath_prepend(str(ROOT / "space"))
+
+    module_path = ROOT / "space" / "app.py"
+    spec = importlib.util.spec_from_file_location("space_app_for_ui_test", module_path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
 
 
-def test_space_ui_contract_is_large_type_compact_and_responsive():
-    source = load_space_app_source()
+def test_space_ui_contract_is_large_type_compact_and_responsive(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+    config = app.demo.get_config_file()
+    props = [component["props"] for component in config["components"]]
+    hooks = {item.get("elem_id") for item in props}
+    classes = {
+        name
+        for item in props
+        for name in item.get("elem_classes", [])
+    }
 
-    for hook in (
+    assert {
         "app-header",
         "game-layout",
         "board-panel",
@@ -54,20 +95,26 @@ def test_space_ui_contract_is_large_type_compact_and_responsive():
         "position-evaluation",
         "game-control",
         "thinking-note",
-    ):
-        assert hook in source
+    } <= hooks
+    assert {"column-button", "game-control"} <= classes
 
-    assert "APP_CSS" in source
-    assert "font-size: 20px" in source
-    assert "font-size: 22px" in source
-    assert "font-size: 28px" in source
-    assert "font-size: 30px" in source
-    assert "font-size: 36px" in source
-    assert "font-size: 31px" in source
-    assert "border-radius: 4px" in source
-    assert "@media (max-width: 900px)" in source
-    assert "overflow-x: hidden" in source
+    css = config["css"]
+    assert css is not None
+    for rule in (
+        "font-size: 20px",
+        "font-size: 22px",
+        "font-size: 28px",
+        "font-size: 30px",
+        "font-size: 36px",
+        "font-size: 31px",
+        "border-radius: 4px",
+        "@media (max-width: 900px)",
+        "overflow-x: hidden",
+    ):
+        assert rule in css
 ```
+
+The test replaces only checkpoint loading and evaluator construction. It builds the real Gradio tree and asserts the serialized config consumed by browsers; it does not grep `app.py` source.
 
 - [ ] **Step 2: Run the focused test and verify RED**
 
@@ -78,7 +125,7 @@ Run:
   -m pytest tests/test_space_release.py::test_space_ui_contract_is_large_type_compact_and_responsive -q
 ```
 
-Expected: FAIL because `space/app.py` does not yet define `APP_CSS` or the required hooks.
+Expected: FAIL because the rendered config has no CSS or required hooks.
 
 - [ ] **Step 3: Add the visual tokens and responsive CSS**
 
@@ -241,13 +288,22 @@ git commit -m "feat: polish accessible Space layout"
 Add:
 
 ```python
-def test_space_events_keep_outputs_visible_during_ai_compute():
-    source = load_space_app_source()
+def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+    config = app.demo.get_config_file()
+    click_events = [
+        dependency
+        for dependency in config["dependencies"]
+        if any(event == "click" for _, event in dependency["targets"])
+    ]
 
-    assert source.count('show_progress="minimal"') == 2
-    assert 'show_progress="full"' not in source
-    assert "AI 思考時會保留棋盤" in source
-    assert "outputs = [board, session, value_label, status]" in source
+    assert len(click_events) == 8
+    assert all(event["show_progress"] == "minimal" for event in click_events)
+    assert all(len(event["outputs"]) == 4 for event in click_events)
+    assert any(
+        "AI 思考時會保留棋盤" in str(component["props"].get("value", ""))
+        for component in config["components"]
+    )
 ```
 
 The count is two because one declaration configures the new-game event and the declaration inside the button loop configures all seven column events.
@@ -261,7 +317,7 @@ Run:
   -m pytest tests/test_space_release.py::test_space_events_keep_outputs_visible_during_ai_compute -q
 ```
 
-Expected: FAIL because the click declarations still use Gradio's default full progress mode.
+Expected: FAIL because the real click dependencies still serialize with `show_progress="full"`.
 
 - [ ] **Step 3: Configure lightweight progress on every click event**
 
