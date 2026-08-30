@@ -1,7 +1,8 @@
 """Deploy the Gradio arena to HF Spaces.
 
-Bundles a copy of the az package into space/az (the Space is self-contained,
-no git dependency), then uploads the space/ folder.
+Rebuilds the gitignored space/az deployment bundle from the canonical src/az
+package (the Space is self-contained, with no git dependency), then uploads
+the space/ folder. The model revision is pinned in space/model_assets.py.
 
 Usage:
     python scripts/deploy_space.py [--repo-id steven0226/connect4-arena] [--dry-run]
@@ -17,13 +18,17 @@ ROOT = Path(__file__).resolve().parent.parent
 SPACE = ROOT / "space"
 
 
-def bundle_az():
-    dst = SPACE / "az"
-    if dst.exists():
-        shutil.rmtree(dst)
-    shutil.copytree(ROOT / "src" / "az", dst,
+def bundle_az(
+    source: Path = ROOT / "src" / "az",
+    destination: Path = SPACE / "az",
+) -> Path:
+    """Replace the generated Space bundle with the canonical ``src/az``."""
+    if destination.exists():
+        shutil.rmtree(destination)
+    shutil.copytree(source, destination,
                     ignore=shutil.ignore_patterns("__pycache__"))
-    print(f"bundled az package -> {dst}")
+    print(f"bundled canonical {source} -> generated {destination}")
+    return destination
 
 
 def main():

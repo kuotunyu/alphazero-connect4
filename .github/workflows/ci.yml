@@ -10,8 +10,6 @@ permissions:
 jobs:
   pytest:
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: src
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
@@ -21,4 +19,6 @@ jobs:
       # Unit tests cover the engine/search/result contracts and do not need
       # the heavyweight torch training dependency.
       - run: python -m pip install --upgrade pip numpy pytest
+      - run: python -m pip install --no-deps -e .
+      - run: python -c "import az; print(az.__file__)"
       - run: python -m pytest tests -q

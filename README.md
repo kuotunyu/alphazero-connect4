@@ -56,7 +56,7 @@ flowchart LR
 ## 專案結構
 
 ```
-src/az/            核心套件
+src/az/            canonical 核心套件（唯一手寫來源）
   game.py          bitboard 引擎（Pascal Pons 佈局、哨兵列、O(1) 落子與勝負判定）
   model.py         策略/價值 ResNet（6 blocks × 96 filters，~1.1M 參數）+ 批次 evaluator
   mcts.py          PUCT 樹搜尋（evaluator 可插拔：神經網 / 隨機 rollout / 均勻）
@@ -66,8 +66,8 @@ src/az/            核心套件
   arena.py         批次化對戰（隨機 / 純 MCTS / 最佳網錨點）、gating
   elo.py           對錨點的 MLE Elo（勝率截斷防無限大）
   viz.py           棋盤渲染與 Elo 曲線（Space 與 GIF 共用）
-tests/             36 個單元測試（連四各方向、平手、非法步、一步殺、必須擋、結果驗證…）
-space/             Gradio 對戰 app（獨立部署到 HF Space）
+tests/             36 個核心／結果測試 + 3 個 Space release-boundary 測試
+space/             Gradio app 與部署設定；space/az 是發布時生成的 bundle
 scripts/           錨點 Elo 校準、精確解算器 benchmark、結果摘要、GIF、Elo 圖、HF 發佈
 alphazero_connect4_colab_train.ipynb  Colab A100 訓練薄封裝
 ```
@@ -80,7 +80,7 @@ alphazero_connect4_colab_train.ipynb  Colab A100 訓練薄封裝
 python -m venv .venv && .venv/Scripts/activate
 pip install torch --index-url https://download.pytorch.org/whl/cu121   # Windows CUDA
 pip install -e ".[dev]"
-pytest tests -q                      # 36 tests
+pytest tests -q                      # 39 tests：36 既有 + 3 release-boundary
 python -m az.train --preset smoke    # ~40 分鐘 @ RTX 2070，驗證學習訊號
 ```
 
@@ -166,6 +166,28 @@ python scripts/benchmark_solver_moves.py --positions 100 --budgets 50 200 800
 
 本機試玩：`python scripts/run_space_local.py checkpoints/smoke/best.pt`
 
+### Space 來源邊界與可重現發布
+
+- `src/az` 是 **canonical source**；修改引擎、MCTS 或推理程式時只改這裡。
+- `space/az` 是 `scripts/deploy_space.py` 從 `src/az` 完整重建的
+  **generated deployment bundle**，已 gitignore，不應手動修改或當成第二份原始碼。
+- Space 預設從 model repo commit
+  [`0ba2361fe4044af9f6bfadfa89997b46191077c7`](https://huggingface.co/steven0226/alphazero-connect4/tree/0ba2361fe4044af9f6bfadfa89997b46191077c7)
+  同時下載 `config.json` 與 `model.safetensors`；不跟隨可變的 `main`。如要更新模型，
+  先把 `space/model_assets.py` 的 `DEFAULT_MODEL_REVISION` 改成新的 40 字元 commit SHA，
+  再重跑下列驗證；`MODEL_REVISION` 環境變數也只接受 commit SHA。
+
+可審核的發布準備流程（不會上傳）：
+
+```bash
+python -m pip install -e ".[dev,hub]"
+python -m pytest tests -q
+python scripts/deploy_space.py --dry-run
+```
+
+`--dry-run` 會刪除現有 `space/az`、從 canonical tree 重建乾淨 bundle，然後停在本機。
+只有在取得對外發布授權後，才移除 `--dry-run` 執行同一個腳本。
+
 > 開發過程的實測：SMOKE 早期權重 + 200 sims 就在對戰中用「雙重威脅」（一手同時做出兩個
 > 連四點）擊敗了作者；50 sims 檔則可以被殘局 zugzwang 戰術擊敗——難度分層符合預期。正式
 > FULL 權重（~110 萬參數，比 SMOKE 大 3 倍多）部署後實測：CPU 上「困難 · 800 sims」單步
@@ -201,4 +223,5 @@ python scripts/benchmark_solver_moves.py --positions 100 --budgets 50 200 800
 
 ## License
 
-MIT
+本專案原始碼為 [MIT](LICENSE)；依賴套件與選用精確解算器的授權與用途說明見
+[`THIRD_PARTY_NOTICES.md`](THIRD_PARTY_NOTICES.md)。

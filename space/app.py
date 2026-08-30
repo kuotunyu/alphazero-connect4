@@ -18,9 +18,9 @@ from az import game
 from az.mcts import MCTS
 from az.model import NetEvaluator, PolicyValueNet, create_model
 from az.viz import render_board
+from model_assets import download_model_assets, resolve_model_source
 
-MODEL_REPO = os.environ.get("MODEL_REPO", "steven0226/alphazero-connect4")
-MODEL_REVISION = os.environ.get("MODEL_REVISION", "main")
+MODEL_REPO, MODEL_REVISION = resolve_model_source()
 LOCAL_WEIGHTS = os.environ.get("AZ_LOCAL_WEIGHTS")  # local dev: path to best.pt
 
 DIFFICULTIES = [("簡單 · 50 sims", 50), ("中等 · 200 sims", 200),
@@ -36,17 +36,13 @@ def load_model() -> PolicyValueNet:
         model = create_model(payload["config"])
         model.load_state_dict(payload["model"])
         return model
-    from huggingface_hub import hf_hub_download
     from safetensors.torch import load_file
     import json
 
-    weights = hf_hub_download(MODEL_REPO, "model.safetensors",
-                              revision=MODEL_REVISION)
-    config = hf_hub_download(MODEL_REPO, "config.json",
-                             revision=MODEL_REVISION)
-    with open(config) as f:
+    assets = download_model_assets()
+    with assets.config_path.open(encoding="utf-8") as f:
         model = create_model(json.load(f))
-    model.load_state_dict(load_file(weights))
+    model.load_state_dict(load_file(assets.weights_path))
     return model
 
 
@@ -144,7 +140,8 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
         "# 四子棋 Connect Four — 挑戰 AlphaZero 式 agent\n"
         "自我對弈訓練的策略/價值網路 + MCTS。勝率條是網路 value head "
         "對當前局面的即時評估。模型："
-        f"[{MODEL_REPO}](https://huggingface.co/{MODEL_REPO})"
+        f"[{MODEL_REPO}](https://huggingface.co/{MODEL_REPO}) "
+        f"@ `{MODEL_REVISION[:12]}`"
     )
     session = gr.State(initial_state())
 

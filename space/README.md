@@ -22,4 +22,8 @@ evaluation of the current position in real time.
 - 可選先手（紅）或後手（黃）。
 - 權重從公開 model repo
   [steven0226/alphazero-connect4](https://huggingface.co/steven0226/alphazero-connect4)
-  於啟動時下載。
+  於啟動時下載，而且 `config.json` 與 `model.safetensors` 固定在同一個
+  [model commit](https://huggingface.co/steven0226/alphazero-connect4/tree/0ba2361fe4044af9f6bfadfa89997b46191077c7)。
+- 核心 Python 套件來自
+  [GitHub source repository](https://github.com/kuotunyu/alphazero-connect4) 的 canonical
+  `src/az`；發布腳本在上傳前生成自含式 `space/az` bundle。

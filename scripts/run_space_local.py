@@ -11,4 +11,5 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 weights = sys.argv[1] if len(sys.argv) > 1 else ROOT / "checkpoints/smoke/best.pt"
 os.environ.setdefault("AZ_LOCAL_WEIGHTS", str(weights))
+sys.path.insert(0, str(ROOT / "space"))
 runpy.run_path(str(ROOT / "space" / "app.py"), run_name="__main__")
