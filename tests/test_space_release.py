@@ -168,6 +168,7 @@ def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
 
     assert len(click_events) == 8
     assert all(event["show_progress"] == "minimal" for event in click_events)
+    assert all(len(event["show_progress_on"] or []) == 1 for event in click_events)
     assert all(len(event["outputs"]) == 4 for event in click_events)
     assert any(
         "AI 思考時會保留棋盤" in str(component["props"].get("value", ""))

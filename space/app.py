@@ -23,8 +23,8 @@ from model_assets import download_model_assets, resolve_model_source
 MODEL_REPO, MODEL_REVISION = resolve_model_source()
 LOCAL_WEIGHTS = os.environ.get("AZ_LOCAL_WEIGHTS")  # local dev: path to best.pt
 
-DIFFICULTIES = [("簡單 · 50 sims", 50), ("中等 · 200 sims", 200),
-                ("困難 · 800 sims（CPU 思考約 10 秒）", 800)]
+DIFFICULTIES = [("簡單 · 50", 50), ("中等 · 200", 200),
+                ("困難 · 800", 800)]
 
 APP_CSS = """
 :root {
@@ -40,13 +40,22 @@ APP_CSS = """
 }
 
 .gradio-container {
+  width: 100% !important;
   max-width: 1240px !important;
   padding: 16px 20px 24px !important;
+  box-sizing: border-box;
   overflow-x: hidden;
   color: var(--az-ink);
   background: var(--az-canvas);
   font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
   font-size: 20px !important;
+}
+
+.gradio-container .main,
+.gradio-container main.contain {
+  width: 100% !important;
+  max-width: none !important;
+  padding: 0 !important;
 }
 
 .gradio-container p,
@@ -110,10 +119,17 @@ APP_CSS = """
   border-radius: 0 !important;
 }
 
-#column-actions { gap: 7px; }
+#column-actions {
+  display: grid !important;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 7px;
+}
 
 .column-button {
+  width: 100% !important;
+  min-width: 0 !important;
   min-height: 52px !important;
+  padding: 0 !important;
   border: 1px solid #b8c0cc !important;
   border-radius: 4px !important;
   color: var(--az-ink) !important;
@@ -157,6 +173,17 @@ APP_CSS = """
   line-height: 1.3;
 }
 
+#turn-status .progress-text {
+  color: var(--az-blue) !important;
+  font-size: 0 !important;
+  font-weight: 800;
+}
+
+#turn-status .progress-text::before {
+  content: "AI 思考中…";
+  font-size: 20px;
+}
+
 #position-evaluation {
   padding: 10px 0 12px;
   border: 0;
@@ -168,6 +195,27 @@ APP_CSS = """
 #position-evaluation .confidence,
 #position-evaluation .label {
   font-size: 30px !important;
+}
+
+#position-evaluation > label {
+  position: static !important;
+  display: block;
+  padding: 0 0 8px !important;
+  color: var(--az-ink);
+  background: transparent !important;
+  font-size: 20px !important;
+  font-weight: 800;
+}
+
+#position-evaluation > label svg,
+#position-evaluation .output-class { display: none !important; }
+
+#position-evaluation .confidence-set:first-of-type meter {
+  background: var(--az-blue) !important;
+}
+
+#position-evaluation .confidence-set:last-of-type meter {
+  background: #f2c94c !important;
 }
 
 .game-control {
@@ -182,6 +230,22 @@ APP_CSS = """
 }
 
 .game-control .wrap {
+  border-radius: 4px !important;
+}
+
+#side-control .wrap,
+#difficulty-control .wrap {
+  display: grid !important;
+  gap: 8px !important;
+}
+
+#side-control .wrap { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+#difficulty-control .wrap { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+#side-control label,
+#difficulty-control label {
+  min-width: 0 !important;
+  justify-content: center;
   border-radius: 4px !important;
 }
 
@@ -216,6 +280,7 @@ APP_CSS = """
   #app-header h1 { font-size: 31px !important; }
   #game-layout { flex-direction: column; }
   #control-panel { border-left: 1px solid var(--az-line); }
+  #column-actions { gap: 4px; }
   .column-button { min-height: 54px !important; }
 }
 """
@@ -364,21 +429,24 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
             )
             side = gr.Radio(["先手（紅）", "後手（黃）"], value="先手（紅）",
                             label="你的棋色",
+                            elem_id="side-control",
                             elem_classes=["game-control"])
             sims = gr.Radio(DIFFICULTIES, value=200,
                             label="AI 強度（MCTS 模擬次數）",
+                            elem_id="difficulty-control",
                             elem_classes=["game-control"])
             new_game = gr.Button("開始新對局", variant="primary",
                                  elem_id="new-game")
-            gr.Markdown("AI 思考時會保留棋盤，請稍候片刻。",
+            gr.Markdown("AI 思考時會保留棋盤；困難模式約需 10 秒。",
                         elem_id="thinking-note")
 
     outputs = [board, session, value_label, status]
     new_game.click(on_new_game, inputs=[side, sims], outputs=outputs,
-                   show_progress="minimal")
+                   show_progress="minimal", show_progress_on=status)
     for c, btn in enumerate(buttons):
         btn.click(functools.partial(on_drop, c), inputs=[session, sims],
-                  outputs=outputs, show_progress="minimal")
+                  outputs=outputs, show_progress="minimal",
+                  show_progress_on=status)
 
 def launch_app() -> None:
     demo.launch(css=APP_CSS)
