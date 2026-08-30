@@ -194,6 +194,27 @@ def test_space_board_omits_nonessential_image_toolbar(monkeypatch):
     assert app.board.buttons == []
 
 
+def test_space_game_control_labels_are_48px_touch_targets(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+    launch_options = {}
+    monkeypatch.setattr(
+        app.demo,
+        "launch",
+        lambda **options: launch_options.update(options),
+    )
+
+    app.launch_app()
+    css = launch_options["css"]
+
+    assert re.search(
+        r"#side-control label,\s*#difficulty-control label\s*\{"
+        r"[^}]*min-height:\s*48px !important"
+        r"[^}]*touch-action:\s*manipulation",
+        css,
+        re.DOTALL,
+    )
+
+
 def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
     app = load_space_app_module(monkeypatch)
     config = app.demo.get_config_file()

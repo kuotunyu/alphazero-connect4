@@ -263,8 +263,10 @@ APP_CSS = """
 #side-control label,
 #difficulty-control label {
   min-width: 0 !important;
+  min-height: 48px !important;
   justify-content: center;
   border-radius: 4px !important;
+  touch-action: manipulation;
 }
 
 #new-game {
