@@ -34,3 +34,4 @@ alphazero-connect4-src.zip
 !assets/*.gif
 !assets/*.png
 .claude/settings.local.json
+.superpowers/
