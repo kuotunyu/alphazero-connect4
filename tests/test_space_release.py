@@ -22,6 +22,43 @@ def load_model_assets_module():
     return module
 
 
+def load_space_app_module(monkeypatch):
+    import sys
+
+    import torch
+    from az import model as az_model
+
+    class StubModel:
+        def load_state_dict(self, state):
+            return None
+
+        def eval(self):
+            return self
+
+    class StubEvaluator:
+        def __init__(self, model, device):
+            self.model = model
+            self.device = device
+
+    monkeypatch.setenv("AZ_LOCAL_WEIGHTS", "ui-test.pt")
+    monkeypatch.setattr(
+        torch,
+        "load",
+        lambda *args, **kwargs: {"config": {}, "model": {}},
+    )
+    monkeypatch.setattr(az_model, "create_model", lambda config: StubModel())
+    monkeypatch.setattr(az_model, "NetEvaluator", StubEvaluator)
+    monkeypatch.syspath_prepend(str(ROOT / "space"))
+
+    module_path = ROOT / "space" / "app.py"
+    spec = importlib.util.spec_from_file_location("space_app_for_ui_test", module_path)
+    assert spec is not None and spec.loader is not None
+    module = importlib.util.module_from_spec(spec)
+    sys.modules[spec.name] = module
+    spec.loader.exec_module(module)
+    return module
+
+
 def test_default_model_source_pins_one_immutable_revision_for_all_assets(tmp_path):
     model_assets = load_model_assets_module()
     calls = []
@@ -77,3 +114,44 @@ def test_bundle_az_replaces_deployment_copy_from_canonical_source(tmp_path):
     assert (destination / "game.py").read_text(encoding="utf-8") == "ROWS = 6\n"
     assert not (destination / "stale.py").exists()
     assert not (destination / "__pycache__").exists()
+
+
+def test_space_ui_contract_is_large_type_compact_and_responsive(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+    config = app.demo.get_config_file()
+    props = [component["props"] for component in config["components"]]
+    hooks = {item.get("elem_id") for item in props}
+    classes = {
+        name
+        for item in props
+        for name in item.get("elem_classes", [])
+    }
+
+    assert {
+        "app-header",
+        "game-layout",
+        "board-panel",
+        "column-actions",
+        "control-panel",
+        "turn-status",
+        "position-evaluation",
+        "thinking-note",
+    } <= hooks
+    assert {"column-button", "game-control"} <= classes
+
+    launch_options = {}
+    monkeypatch.setattr(app.demo, "launch", lambda **options: launch_options.update(options))
+    app.launch_app()
+    css = launch_options["css"]
+    for rule in (
+        "font-size: 20px",
+        "font-size: 22px",
+        "font-size: 28px",
+        "font-size: 30px",
+        "font-size: 36px",
+        "font-size: 31px",
+        "border-radius: 4px",
+        "@media (max-width: 900px)",
+        "overflow-x: hidden",
+    ):
+        assert rule in css

@@ -26,6 +26,200 @@ LOCAL_WEIGHTS = os.environ.get("AZ_LOCAL_WEIGHTS")  # local dev: path to best.pt
 DIFFICULTIES = [("簡單 · 50 sims", 50), ("中等 · 200 sims", 200),
                 ("困難 · 800 sims（CPU 思考約 10 秒）", 800)]
 
+APP_CSS = """
+:root {
+  --az-ink: #172033;
+  --az-muted: #4e5b6c;
+  --az-blue: #183c73;
+  --az-blue-soft: #edf3fa;
+  --az-orange: #e9680b;
+  --az-orange-soft: #fff7ed;
+  --az-line: #c8ced8;
+  --az-surface: #ffffff;
+  --az-canvas: #f5f7f9;
+}
+
+.gradio-container {
+  max-width: 1240px !important;
+  padding: 16px 20px 24px !important;
+  overflow-x: hidden;
+  color: var(--az-ink);
+  background: var(--az-canvas);
+  font-family: "Noto Sans TC", "Microsoft JhengHei", system-ui, sans-serif;
+  font-size: 20px !important;
+}
+
+.gradio-container p,
+.gradio-container label,
+.gradio-container button,
+.gradio-container input,
+.gradio-container .wrap,
+.gradio-container .label-wrap {
+  font-size: 20px !important;
+  line-height: 1.45;
+}
+
+#app-header {
+  padding: 6px 2px 16px;
+  border-bottom: 4px solid var(--az-blue);
+}
+
+#app-header h1 {
+  margin: 0;
+  color: var(--az-ink);
+  font-size: 36px !important;
+  line-height: 1.2;
+  letter-spacing: -0.025em;
+}
+
+#app-header p,
+#app-header a,
+#app-header code {
+  font-size: 20px !important;
+  line-height: 1.5;
+}
+
+#app-header p { margin: 8px 0 0; color: var(--az-muted); }
+#app-header a { color: var(--az-blue); font-weight: 700; }
+#app-header code { color: var(--az-blue); background: transparent; padding: 0; }
+
+#game-layout {
+  gap: 18px;
+  align-items: stretch;
+  margin-top: 18px;
+}
+
+#board-panel,
+#control-panel,
+#position-evaluation,
+#board {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+#board-panel { min-width: 0; gap: 9px; }
+
+#board {
+  overflow: hidden;
+  border: 1px solid var(--az-line);
+  background: var(--az-surface);
+}
+
+#board .image-container,
+#board img {
+  border-radius: 0 !important;
+}
+
+#column-actions { gap: 7px; }
+
+.column-button {
+  min-height: 52px !important;
+  border: 1px solid #b8c0cc !important;
+  border-radius: 4px !important;
+  color: var(--az-ink) !important;
+  background: var(--az-surface) !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+
+.column-button:hover {
+  border-color: var(--az-orange) !important;
+  color: #943b07 !important;
+  background: var(--az-orange-soft) !important;
+}
+
+.column-button:focus-visible,
+#new-game:focus-visible,
+.game-control input:focus-visible + span {
+  outline: 3px solid #0b6bcb !important;
+  outline-offset: 2px;
+}
+
+#control-panel {
+  gap: 13px;
+  padding: 0 18px 18px;
+  border: 1px solid var(--az-line);
+  border-top: 4px solid var(--az-blue);
+  background: var(--az-surface);
+}
+
+#turn-status {
+  margin: 0 -18px;
+  padding: 14px 18px 13px;
+  border-bottom: 1px solid var(--az-line);
+  background: var(--az-blue-soft);
+}
+
+#turn-status h3 {
+  margin: 0;
+  color: var(--az-blue);
+  font-size: 28px !important;
+  line-height: 1.3;
+}
+
+#position-evaluation {
+  padding: 10px 0 12px;
+  border: 0;
+  border-top: 1px solid var(--az-line);
+  border-bottom: 1px solid var(--az-line);
+}
+
+#position-evaluation .output-class,
+#position-evaluation .confidence,
+#position-evaluation .label {
+  font-size: 30px !important;
+}
+
+.game-control {
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+.game-control label,
+.game-control span,
+.game-control .wrap {
+  font-size: 20px !important;
+}
+
+.game-control .wrap {
+  border-radius: 4px !important;
+}
+
+#new-game {
+  min-height: 56px;
+  border: 0 !important;
+  border-radius: 4px !important;
+  color: #ffffff !important;
+  background: var(--az-orange) !important;
+  font-size: 22px !important;
+  font-weight: 800 !important;
+}
+
+#new-game:hover { background: #c95408 !important; }
+#new-game:disabled,
+.column-button:disabled { cursor: not-allowed; opacity: 0.58; }
+
+#thinking-note {
+  padding-top: 10px;
+  border-top: 1px solid #dfe3e9;
+}
+
+#thinking-note p {
+  margin: 0;
+  color: var(--az-muted);
+  font-size: 20px !important;
+  line-height: 1.45;
+}
+
+@media (max-width: 900px) {
+  .gradio-container { padding: 12px !important; }
+  #app-header h1 { font-size: 31px !important; }
+  #game-layout { flex-direction: column; }
+  #control-panel { border-left: 1px solid var(--az-line); }
+  .column-button { min-height: 54px !important; }
+}
+"""
+
 torch.set_num_threads(2)
 
 
@@ -137,31 +331,47 @@ def on_drop(col: int, s: dict, sims: int):
 
 with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
     gr.Markdown(
-        "# 四子棋 Connect Four — 挑戰 AlphaZero 式 agent\n"
-        "自我對弈訓練的策略/價值網路 + MCTS。勝率條是網路 value head "
-        "對當前局面的即時評估。模型："
+        "# 四子棋 Connect Four — 挑戰 AlphaZero\n"
+        "選擇欄位落子，AlphaZero 將以策略／價值網路與 MCTS 回應。  \n"
+        "模型："
         f"[{MODEL_REPO}](https://huggingface.co/{MODEL_REPO}) "
-        f"@ `{MODEL_REVISION[:12]}`"
+        f"@ `{MODEL_REVISION[:12]}`",
+        elem_id="app-header",
     )
     session = gr.State(initial_state())
 
-    with gr.Row():
-        with gr.Column(scale=3):
-            board = gr.Image(render_board(game.INITIAL), type="numpy",
-                             label="棋盤", interactive=False)
-            with gr.Row():
+    with gr.Row(elem_id="game-layout"):
+        with gr.Column(scale=5, elem_id="board-panel"):
+            board = gr.Image(
+                render_board(game.INITIAL),
+                type="numpy",
+                show_label=False,
+                interactive=False,
+                elem_id="board",
+            )
+            with gr.Row(elem_id="column-actions"):
                 buttons = [gr.Button(str(c + 1), min_width=40,
-                                     elem_id=f"col-{c}")
+                                     elem_id=f"col-{c}",
+                                     elem_classes=["column-button"])
                            for c in range(game.COLS)]
-        with gr.Column(scale=2):
-            status = gr.Markdown(status_text(initial_state()))
-            value_label = gr.Label(label="value head 勝率評估",
-                                   value={"AI 🤖": 0.5, "你": 0.5})
+        with gr.Column(scale=3, elem_id="control-panel"):
+            status = gr.Markdown(status_text(initial_state()),
+                                 elem_id="turn-status")
+            value_label = gr.Label(
+                label="局面評估",
+                value={"AI 🤖": 0.5, "你": 0.5},
+                elem_id="position-evaluation",
+            )
             side = gr.Radio(["先手（紅）", "後手（黃）"], value="先手（紅）",
-                            label="你的棋色")
-            sims = gr.Radio(DIFFICULTIES, value=200, label="難度（MCTS 模擬次數）")
-            new_game = gr.Button("新對局 / 重開", variant="primary",
+                            label="你的棋色",
+                            elem_classes=["game-control"])
+            sims = gr.Radio(DIFFICULTIES, value=200,
+                            label="AI 強度（MCTS 模擬次數）",
+                            elem_classes=["game-control"])
+            new_game = gr.Button("開始新對局", variant="primary",
                                  elem_id="new-game")
+            gr.Markdown("AI 思考時會保留棋盤，請稍候片刻。",
+                        elem_id="thinking-note")
 
     outputs = [board, session, value_label, status]
     new_game.click(on_new_game, inputs=[side, sims], outputs=outputs)
@@ -169,5 +379,9 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
         btn.click(functools.partial(on_drop, c), inputs=[session, sims],
                   outputs=outputs)
 
+def launch_app() -> None:
+    demo.launch(css=APP_CSS)
+
+
 if __name__ == "__main__":
-    demo.launch()
+    launch_app()
