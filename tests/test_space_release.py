@@ -215,6 +215,18 @@ def test_space_game_control_labels_are_48px_touch_targets(monkeypatch):
     )
 
 
+def test_space_turn_status_is_a_polite_atomic_live_region(monkeypatch):
+    app = load_space_app_module(monkeypatch)
+    status_config = app.status.get_config()
+
+    assert status_config["name"] == "html"
+    initial_value = str(status_config["value"])
+    assert 'role="status"' in initial_value
+    assert 'aria-live="polite"' in initial_value
+    assert 'aria-atomic="true"' in initial_value
+    assert "輪到你" in initial_value
+
+
 def test_space_events_keep_outputs_visible_during_ai_compute(monkeypatch):
     app = load_space_app_module(monkeypatch)
     config = app.demo.get_config_file()

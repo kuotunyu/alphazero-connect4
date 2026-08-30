@@ -9,6 +9,7 @@ from __future__ import annotations
 
 import functools
 import os
+from html import escape
 
 import gradio as gr
 import numpy as np
@@ -359,10 +360,18 @@ def ai_win_prob(s: dict) -> float:
 
 def status_text(s: dict) -> str:
     if s["over"]:
-        return f"### {s['result']}"
-    human_to_move = (game.ply(board_state(s)) % 2 == 0) == s["human_first"]
-    who = "🔴" if game.ply(board_state(s)) % 2 == 0 else "🟡"
-    return f"### 輪到{'你' if human_to_move else ' AI'} {who}"
+        message = s["result"]
+    else:
+        human_to_move = (
+            (game.ply(board_state(s)) % 2 == 0) == s["human_first"]
+        )
+        who = "🔴" if game.ply(board_state(s)) % 2 == 0 else "🟡"
+        message = f"輪到{'你' if human_to_move else ' AI'} {who}"
+    return (
+        '<div role="status" aria-live="polite" aria-atomic="true">'
+        f"<h3>{escape(message)}</h3>"
+        "</div>"
+    )
 
 
 def finish_if_over(s: dict, mover_is_human: bool) -> None:
@@ -446,8 +455,10 @@ with gr.Blocks(title="Connect4 Arena — AlphaZero") as demo:
                                      elem_classes=["column-button"])
                            for c in range(game.COLS)]
         with gr.Column(scale=3, elem_id="control-panel"):
-            status = gr.Markdown(status_text(initial_state()),
-                                 elem_id="turn-status")
+            status = gr.HTML(
+                status_text(initial_state()),
+                elem_id="turn-status",
+            )
             value_label = gr.Label(
                 label="局面評估",
                 value={"AI 🤖": 0.5, "你": 0.5},
