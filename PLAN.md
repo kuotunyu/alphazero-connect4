@@ -1,5 +1,10 @@
 # alphazero-connect4 — v1 實作計畫
 
+> **歷史 v1 設計記錄。** 此文件保留初始規劃與當時環境，並非目前待辦或操作入口。
+> 專案已存在於 GitHub；目前成果與使用方式以 [README.md](README.md) 為準。
+> 下文的「資料夾全空／非 git repo」、暫緩發布、重新初始化與搬移目錄指示均已過時，
+> 不應據此重建 repository、搬動 checkout 或重跑訓練。
+
 ## Context
 
 從零實作 AlphaZero 式自我對弈訓練一個 Connect Four（6×7）agent：本機（Windows / RTX 2070 8GB）負責核心邏輯開發、單元測試與 SMOKE 級管線驗證；正式重訓放 Colab A100（過夜 6–10 小時預算）；最終部署成 Hugging Face Space 讓任何人上網對戰。程式碼組織為 Python 套件（src/ 佈局，package 名 `az`），訓練入口同時支援 `alphazero_connect4_colab_train.ipynb` 薄封裝與 `python -m az.train` 直跑。計畫經三路設計評審（引擎+MCTS／訓練管線+Colab／打包+Space 部署）定案。
