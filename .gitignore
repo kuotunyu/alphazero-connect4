@@ -33,6 +33,10 @@ alphazero-connect4-src.zip
 # keep showcase assets
 !assets/*.gif
 !assets/*.png
-.claude/settings.local.json
+
+# local maintainer and agent workflow (kept outside the public repository)
+.claude/
 .superpowers/
 .worktrees/
+PLAN.md
+docs/superpowers/
